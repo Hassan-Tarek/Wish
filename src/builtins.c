@@ -4,15 +4,11 @@ char *path_list[MAX_PATHS] = {"/bin", "/usr/bin"};
 const char *builtin_names[] = { "cd", "path", "pwd", "echo", "exit" };
 const size_t builtin_count = sizeof(builtin_names) / sizeof(builtin_names[0]);
 
-
-
 bool is_valid_builtin_command(const char *command_name) {
     for (int i = 0; i < builtin_count; i++) {
-        if (strcmp(command_name, builtin_names[i]) == 0) {
+        if (strcmp(command_name, builtin_names[i]) == 0)
             return true;
-        }
-    }
-        
+    }   
     return false;
 }
 
@@ -21,11 +17,9 @@ BuiltinType get_builtin_type(const char *command_name) {
         return NONE;
 
     for (int i = 0; i < builtin_count; i++) {
-        if (strcmp(command_name, builtin_names[i]) == 0) {
+        if (strcmp(command_name, builtin_names[i]) == 0)
             return (BuiltinType) i;
-        }
     }
-
     return NONE;
 }
 

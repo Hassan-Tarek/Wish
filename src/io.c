@@ -23,13 +23,11 @@ char* read_command(void) {
     if (getline(&command, &len, stdin) == -1) {
         fatal_error("Failed to read command from stdin!");
     }
-
     return command;
 }
 
 char** read_commands_from_file(const char* filename) {
     FILE* file = fopen(filename, "r");
-
     if (file == NULL) {
         fatal_error("Can't open file!");
     }
@@ -54,20 +52,16 @@ char** read_commands_from_file(const char* filename) {
         if (line_number >= capacity) {
             capacity *= 2;
             char **temp = realloc(buffer, capacity * sizeof(char*));
-
             if (!temp) {
                 fatal_error("Memory allocation failed!");
             }
-
             buffer = temp;
         }
-
         buffer[line_number++] = strdup(line);
     }
 
     free(line);
     fclose(file);
-
     buffer[line_number] = NULL;
     return buffer;
 }

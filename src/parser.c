@@ -5,7 +5,6 @@ static void trim(char *command) {
         return;
 
     int len = strlen(command);
-
     int start = 0;
     int end = len - 1;
     while (start < len && isspace(command[start])) 
@@ -112,12 +111,10 @@ static Command *parse_command(const char *token) {
     parse_input_file(command, token);
     parse_output_file(command, token);
     command->type = get_command_type(command->name);
-
     if (command->type == BUILTIN)
         command->builtin_type = get_builtin_type(command->name);
     else
         command->builtin_type = NONE;
-
     return command;
 }
 
@@ -157,10 +154,8 @@ void free_parsed_commands(ParsedCommands *parsed_commands) {
     if (!parsed_commands)
         return;
     
-    for (int i = 0; i < parsed_commands->count; i++) {
+    for (int i = 0; i < parsed_commands->count; i++)
         free_command(parsed_commands->commands[i]);
-    }
-
     free(parsed_commands->commands);
     free(parsed_commands);
 }
