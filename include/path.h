@@ -8,8 +8,10 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #include "command.h"
 #include "io.h"
@@ -18,16 +20,13 @@ extern "C" {
 #define MAX_PATH_LENGTH 4096
 #define MAX_PATHS 128
 
-typedef struct {
-    char *list[MAX_PATHS];
-    size_t count;
-} PathList;
+extern char *path_list[MAX_PATHS];
+extern size_t paths_count;
 
-PathList* create_path_list(void);
-void add_path(PathList *path_list);
-void remove_path(PathList *path_list);
-void free_path_list(PathList *path_list);
-
+void init_path_list();
+void add_path(const char *path);
+void remove_path(const char *path);
+void free_path_list();
 
 #ifdef __cplusplus
 }

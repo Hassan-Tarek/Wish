@@ -1,4 +1,4 @@
-#include "../header/error.h"
+#include "../include/error.h"
 
 void print_error_message(const char* error_message) {
     fprintf(stderr, "wish: ");

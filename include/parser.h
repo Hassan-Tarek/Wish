@@ -15,13 +15,7 @@ extern "C" {
 #include "builtins.h"
 #include "error.h"
 
-typedef struct {
-    Command *commands[MAX_COMMANDS];
-    size_t count;
-} ParsedCommands;
-
-ParsedCommands *parse_input(const char* input);
-void free_parsed_commands(ParsedCommands *commands);
+int parse_input(char* input, const Command *command_list[]);
 
 #ifdef __cplusplus
 }

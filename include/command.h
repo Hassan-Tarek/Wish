@@ -13,6 +13,7 @@ extern "C" {
 
 #include "builtins.h"
 #include "executor.h"
+#include "error.h"
 
 #define MAX_NAME_LENGTH 128
 #define MAX_ARGS 128
@@ -37,8 +38,10 @@ typedef struct {
     BuiltinType builtin_type;
 } Command;
 
+extern Command *command_list[MAX_COMMANDS];
+
 Command *create_command(void);
-void free_command(Command*);
+void free_command_list();
 
 bool is_valid_command(const char *command_name);
 CommandType get_command_type(const char *command_name);

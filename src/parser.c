@@ -1,4 +1,4 @@
-#include "../header/parser.h"
+#include "../include/parser.h"
 
 static void trim(char *command) {
     if (!command)
@@ -12,7 +12,7 @@ static void trim(char *command) {
     while (end > start && isspace(command[end]))
         end--;
 
-    int new_len = end - start;
+    int new_len = end - start + 1;
     for (int i = 0; i < new_len; i++) {
         command[i] = command[start + i];
     }
@@ -21,11 +21,12 @@ static void trim(char *command) {
 
 static void parse_command_name(Command *command, const char *input) {
     if (!command || !input)
-        return NULL;
+        return;
     
     char *copy = strdup(input);
     char *token = strtok(copy, " \t");
-    command->name = strdup(token);
+    if (token)
+        command->name = strdup(token);
     free(copy);
 }
 
@@ -68,7 +69,7 @@ static void parse_input_file(Command *command, const char *input) {
     if (type != 1 && type != 3) 
         return;
 
-    char copy = strdup(input);
+    char *copy = strdup(input);
     char *token = strtok(copy, " \t");
     while (token && strcmp(token, "<") != 0 && strcmp(token, "<<") != 0) {
         token = strtok(NULL, " \t");
@@ -76,7 +77,8 @@ static void parse_input_file(Command *command, const char *input) {
 
     if (token) 
         token = strtok(NULL, " \t");
-    command->input_file = strdup(token);
+    if (token)
+        command->input_file = strdup(token);
     free(copy);
 }
 
@@ -95,11 +97,12 @@ static void parse_output_file(Command *command, const char *input) {
     }
     if (token) 
         token = strtok(NULL, " \t");
-    command->output_file = strdup(token);
+    if (token)
+        command->output_file = strdup(token);
     free(copy);
 }
 
-static Command *parse_command(const char *token) {
+static Command *parse_command(char *token) {
     if (!token) 
         return NULL;
     
@@ -118,44 +121,23 @@ static Command *parse_command(const char *token) {
     return command;
 }
 
-ParsedCommands *parse_input(const char *input) {
-    if (!input)
-        return NULL;
+int parse_input(char *input, const Command *command_list[]) {
+    if (!input || !command_list)
+        return 0;
     
     trim(input);
 
-    ParsedCommands *parsed_commands = malloc(sizeof(ParsedCommands));
-    if (!parsed_commands)
-        fatal_error("Failed to allocate ParsedCommands!");
-
-    parsed_commands->commands = malloc(MAX_COMMANDS * sizeof(Command));
-    if (!parsed_commands->commands) {
-        free(parsed_commands);
-        fatal_error("Failed to allocate commands array!");
-    }
-    parsed_commands->count = 0;
-
+    int index = 0;
     char *saveptr;
     char *token = strtok_r(input, "&", &saveptr);
-    while (token != NULL && parsed_commands->count < MAX_COMMANDS) {
+    while (token != NULL && index < MAX_COMMANDS) {
         Command *command = parse_command(token);
         if (command) {
             command->background = true;
-            parsed_commands->commands[parsed_commands->count++] = command;
+            command_list[index++] = command;
         }
         token = strtok_r(NULL, "&", &saveptr);
     }
 
-    return parsed_commands;
-}
-
-
-void free_parsed_commands(ParsedCommands *parsed_commands) {
-    if (!parsed_commands)
-        return;
-    
-    for (int i = 0; i < parsed_commands->count; i++)
-        free_command(parsed_commands->commands[i]);
-    free(parsed_commands->commands);
-    free(parsed_commands);
+    return index;
 }

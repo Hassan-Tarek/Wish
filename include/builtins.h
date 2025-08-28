@@ -9,12 +9,8 @@ extern "C" {
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include <unistd.h>
 
-#include "command.h"
-#include "path.h"
-#include "io.h"
-#include "error.h"
+#define BUILTIN_COMMAND_NUM 8
 
 typedef enum {
     NONE,
@@ -25,18 +21,10 @@ typedef enum {
     EXIT
 } BuiltinType;
 
-extern const char *builtin_names[];
-extern const size_t builtin_count;
+extern const char *builtin_commands[BUILTIN_COMMAND_NUM];
 
 bool is_valid_builtin_command(const char *command_name);
 BuiltinType get_builtin_type(const char *command_name);
-
-void execute_cd_command(Command *command);
-void execute_path_command(Command *command);
-void execute_pwd_command(Command *command);
-void execute_echo_command(Command *command);
-void execute_exit_command(void);
-
 
 #ifdef __cplusplus
 }

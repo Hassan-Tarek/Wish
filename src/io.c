@@ -1,4 +1,4 @@
-#include "../header/io.h"
+#include "../include/io.h"
 
 void print_prompt(void) {
     printf("wish> ");
