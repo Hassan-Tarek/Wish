@@ -7,9 +7,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include <stdbool.h>
+#include "command.h"
+#include "builtins_executor.h"
+#include "external_executor.h"
+#include "error.h"
 
-bool is_valid_external_command(const char *command_name);
+void execute_command(Command *command);
 
 #ifdef __cplusplus
 }

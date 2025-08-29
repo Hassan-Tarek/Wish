@@ -15,6 +15,7 @@ extern "C" {
 #include "io.h"
 #include "error.h"
 
+void execute_builtin_command(Command *command);
 void execute_cd_command(Command *command);
 void execute_exit_command(Command *command);
 void execute_pwd_command(Command *command);

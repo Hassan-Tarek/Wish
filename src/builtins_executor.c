@@ -1,16 +1,41 @@
 #include "../include/builtins_executor.h"
 
+void execute_builtin_command(Command *command) {
+    if (!command || !command->name) return;
+
+    if (strcmp(command->name, "cd") == 0) {
+        execute_cd_command(command);
+    } else if (strcmp(command->name, "exit") == 0) {
+        execute_exit_command(command);
+    } else if (strcmp(command->name, "pwd") == 0) {
+        execute_pwd_command(command);
+    } else if (strcmp(command->name, "echo") == 0) {
+        execute_echo_command(command);
+    } else if (strcmp(command->name, "export") == 0) {
+        execute_export_command(command);
+    } else if (strcmp(command->name, "unset") == 0) {
+        execute_unset_command(command);
+    } else if (strcmp(command->name, "env") == 0) {
+        execute_env_command(command);
+    } else if (strcmp(command->name, "help") == 0) {
+        execute_help_command(command);
+    } else {
+        print_error_message("Unknown built-in command\n");
+    }
+}
+
+
 void execute_cd_command(Command *command) {
     if (!command) return;
 
     if (command->args_count > 2) {
-        perror("cd: too many arguments!");
+        print_error_message("cd: too many arguments!");
         return;
     }
 
     const char *path = command->args_count > 1 ? command->args[1] : getenv("HOME");
     if (chdir(path) != 0) {
-        perror("cd: couldn't change dir!");
+        print_error_message("cd: couldn't change dir!");
     }
 }
 
@@ -55,7 +80,7 @@ void execute_export_command(Command *command) {
         char *arg = command->args[i];
         char *equal_sign = strchr(arg, '=');
         if (!equal_sign) {
-            perror("export: invalid format, expected NAME=VALUE\n");
+            print_error_message("export: invalid format, expected NAME=VALUE\n");
             continue;
         }
 
@@ -91,7 +116,7 @@ void execute_unset_command(Command *command) {
 
     char *name = command->args[1];
     if (!wish_unsetenv(name)) {
-        perror("wish_unsetenv: failed to unset variable\n");
+        print_error_message("wish_unsetenv: failed to unset variable\n");
     }
 }
 
