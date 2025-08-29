@@ -25,7 +25,6 @@ extern size_t paths_count;
 
 void init_path_list();
 void add_path(const char *path);
-void remove_path(const char *path);
 void free_path_list();
 
 #ifdef __cplusplus

@@ -47,27 +47,6 @@ void add_path(const char *path) {
     paths_count++;
 }
 
-void remove_path(const char *path) {
-    if (!path) 
-        return;
-
-    for (size_t i = 0; i < paths_count; i++) {
-        if (strcmp(path_list[i], path) == 0) {
-            free(path_list[i]);
-            path_list[i] = NULL;
-
-            // shift remaining paths to left
-            for (size_t j = i + 1; j < paths_count; j++) {
-                path_list[j - 1] = path_list[j];
-            }
-
-             paths_count--;
-            path_list[paths_count] = NULL;
-            break;
-        }
-    }
-}
-
 void free_path_list() {
     for (size_t i = 0; i < paths_count; i++) {
         if (path_list[i]) {

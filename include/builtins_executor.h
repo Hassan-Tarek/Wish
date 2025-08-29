@@ -10,6 +10,7 @@ extern "C" {
 #include <unistd.h>
 
 #include "command.h"
+#include "env.h"
 #include "path.h"
 #include "io.h"
 #include "error.h"
