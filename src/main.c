@@ -1,4 +1,4 @@
-#include "include/wish.h"
+#include "wish/wish.h"
 
 int main(int argc, char* argv[], char* envp[]) {
     init_shell();

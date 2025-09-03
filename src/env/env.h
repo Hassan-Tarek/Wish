@@ -11,7 +11,7 @@ extern "C" {
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "error.h"
+#include "../error/error.h"
 
 extern char **wish_environ;
 extern size_t wish_environ_count;

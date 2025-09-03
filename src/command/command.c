@@ -1,6 +1,6 @@
-#include "../include/command.h"
+#include "command.h"
 
-Command *command_list[MAX_COMMANDS] = { NULL };
+// Command *command_list[MAX_COMMANDS] = { NULL };
 
 Command *create_command(void) {
     Command *command = malloc(sizeof(Command));
@@ -8,20 +8,23 @@ Command *create_command(void) {
         fatal_error("Failed to allocate memory for Command!");
 
     command->name = NULL;
-    for (int i = 0; i < MAX_ARGS; i++)
+    for (size_t i = 0; i < MAX_ARGS; i++) {
         command->args[i] = NULL;
+    }
 
     command->args_count = 0;
-    command->input_file = NULL;
-    command->output_file = NULL;
     command->background = false;
-    command->type = UNDEFINED;
+    command->command_type = UNDEFINED;
     command->builtin_type = NONE;
+
+    for (size_t i = 0; i < MAX_REDIRECTS; i++) {
+        command->redirects[i] = create_redirect();
+    }
 
     return command;
 }
 
-static void free_command(Command *command) {
+void free_command(Command *command) {
     if (!command) return;
 
     free(command->name);
@@ -32,23 +35,20 @@ static void free_command(Command *command) {
         command->args[i] = NULL;
     }
 
-    free(command->input_file);
-    command->input_file = NULL;
-
-    free(command->output_file);
-    command->output_file = NULL;
-
+    for (size_t i = 0; i < MAX_REDIRECTS; i++) {
+        free_redirect(command->redirects[i]);
+    }
     free(command);
 }
 
-void free_command_list(void) {
-    for (int i = 0; i < MAX_COMMANDS; i++) {
-        if (command_list[i]) {
-            free_command(command_list[i]);
-            command_list[i] = NULL;
-        }
-    }
-}
+// void free_command_list(void) {
+//     for (int i = 0; i < MAX_COMMANDS; i++) {
+//         if (command_list[i]) {
+//             free_command(command_list[i]);
+//             command_list[i] = NULL;
+//         }
+//     }
+// }
 
 bool is_valid_command(const char *command_name) {
     if (!command_name) 

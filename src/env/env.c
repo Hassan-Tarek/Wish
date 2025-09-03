@@ -1,4 +1,4 @@
-#include "../include/env.h"
+#include "env.h"
 
 char **wish_environ = NULL;
 size_t wish_environ_count = 0;

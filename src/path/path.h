@@ -13,9 +13,7 @@ extern "C" {
 #include <unistd.h>
 #include <sys/stat.h>
 
-#include "command.h"
-#include "io.h"
-#include "error.h"
+#include "../env/env.h"
 
 #define MAX_PATH_LENGTH 4096
 #define MAX_PATHS 128
@@ -26,6 +24,8 @@ extern size_t paths_count;
 void init_path_list();
 void add_path(const char *path);
 void free_path_list();
+
+char *find_executable_in_path(const char *command_name);
 
 #ifdef __cplusplus
 }

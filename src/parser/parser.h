@@ -11,9 +11,9 @@ extern "C" {
 #include <string.h>
 #include <ctype.h>
 
-#include "command.h"
-#include "builtins.h"
-#include "error.h"
+#include "../command/command.h"
+#include "../builtin/builtin.h"
+#include "../error/error.h"
 
 int parse_input(char* input, const Command *command_list[]);
 

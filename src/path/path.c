@@ -1,4 +1,4 @@
-#include "../include/path.h"
+#include "path.h"
 
 char *path_list[MAX_PATHS] = { NULL };
 size_t paths_count = 0;
@@ -17,7 +17,7 @@ static bool is_valid_dir(const char *path) {
 }
 
 void init_path_list() {
-    char *env_path = getenv("PATH");
+    char *env_path = wish_getenv("PATH");
     if (!env_path) 
         return;
 
@@ -55,4 +55,29 @@ void free_path_list() {
         }
     }
     paths_count = 0;
+}
+
+char *find_executable_in_path(const char *command_name) {
+    if (!command_name || !*command_name) 
+        return NULL;
+
+    // If command contains '/'
+    if (strchr(command_name, '/')) {
+        if (access(command_name, X_OK) == 0) {
+            return strdup(command_name);
+        } else {
+            return NULL;
+        }
+    }
+
+    for (size_t i = 0; i < paths_count; i++) {
+        char fullpath[MAX_PATH_LENGTH];
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", path_list[i], command_name);
+        
+        if (access(fullpath, X_OK) == 0) {
+            return strdup(fullpath);
+        }
+    }
+
+    return NULL;
 }

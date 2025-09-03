@@ -1,4 +1,4 @@
-#include "../include/wish.h"
+#include "wish.h"
 
 void init_shell(void) {
 

@@ -7,10 +7,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include "command.h"
-#include "builtins_executor.h"
-#include "external_executor.h"
-#include "error.h"
+#include "../command/command.h"
+#include "../builtin/builtin.h"
+#include "../external/external.h"
+#include "../error/error.h"
 
 void execute_command(Command *command);
 
