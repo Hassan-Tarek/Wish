@@ -12,7 +12,6 @@ static bool is_valid_dir(const char *path) {
         // path does not exist
         return false;
     }
-
     return S_ISDIR(st.st_mode);
 }
 
@@ -38,11 +37,9 @@ void add_path(const char *path) {
         return;
 
     // skip if already exists
-    for (size_t i = 0; i < paths_count; i++) {
+    for (size_t i = 0; i < paths_count; i++)
         if (strcmp(path_list[i], path) == 0)
             return;
-    }
-
     path_list[paths_count] = strdup(path);
     paths_count++;
 }
@@ -73,11 +70,9 @@ char *find_executable_in_path(const char *command_name) {
     for (size_t i = 0; i < paths_count; i++) {
         char fullpath[MAX_PATH_LENGTH];
         snprintf(fullpath, sizeof(fullpath), "%s/%s", path_list[i], command_name);
-        
         if (access(fullpath, X_OK) == 0) {
             return strdup(fullpath);
         }
     }
-
     return NULL;
 }

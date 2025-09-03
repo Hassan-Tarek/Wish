@@ -34,18 +34,16 @@ static void execute_cd_command(Command *command) {
 
     const char *home = wish_getenv("HOME");
     const char *path = command->args_count > 1 ? command->args[1] : (home ? home : "/");
-    if (chdir(path) != 0) {
+    if (chdir(path) != 0)
         print_error_message("cd: couldn't change dir!");
-    }
 }
 
 static void execute_exit_command(Command *command) {
     if (!command) return;
 
     int status = 0;
-    if (command->args_count > 1 && command->args[1]) {
+    if (command->args_count > 1 && command->args[1])
         status = atoi(command->args[1]);
-    }
     exit(status);
 }
 
@@ -53,9 +51,8 @@ static void execute_pwd_command(Command *command) {
     (void) command;
     
     char cwd[MAX_PATH_LENGTH];
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
         print_message(stdout, "%s\n", cwd);
-    }
 }
 
 static void execute_echo_command(Command *command) {
@@ -90,7 +87,6 @@ static void execute_export_command(Command *command) {
         *equal_sign = '\0';
         char *name = arg_copy;
         char *value = equal_sign + 1;
-
         if (strcmp(name, "PATH") == 0) {
             if (strncmp(value, "$PATH:", 6) == 0) {
                 char *paths_to_add = value + 6;
@@ -119,17 +115,15 @@ static void execute_unset_command(Command *command) {
     if (!command || command->args_count < 2) return;
 
     char *name = command->args[1];
-    if (!wish_unsetenv(name)) {
+    if (!wish_unsetenv(name))
         print_error_message("wish_unsetenv: failed to unset variable\n");
-    }
 }
 
 static void execute_env_command(Command *command) {
     if (!command) return;
 
-    for (char **env = wish_environ; *env != NULL; env++) {
+    for (char **env = wish_environ; *env != NULL; env++)
         print_message(stdout, "%s\n", *env);
-    }
 }
 
 static void execute_help_command(Command *command) {
@@ -157,13 +151,9 @@ bool is_valid_builtin_command(const char *command_name) {
 BuiltinType get_builtin_type(const char *command_name) {
     if (!command_name)
         return NONE;
-
-    for (size_t i = 0; builtin_names[i] != NULL; i++) {
-        if (strcmp(command_name, builtin_names[i]) == 0) {
+    for (size_t i = 0; builtin_names[i] != NULL; i++)
+        if (strcmp(command_name, builtin_names[i]) == 0)
             return (BuiltinType)(i + 1);  // +1 because NONE = 0
-        }
-    }
-
     return NONE;
 }
 
@@ -176,6 +166,5 @@ void execute_builtin_command(Command *command) {
             return;
         }
     }
-
     print_error_message("Unknown built-in command\n");
 }

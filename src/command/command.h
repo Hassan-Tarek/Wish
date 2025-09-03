@@ -15,11 +15,8 @@ extern "C" {
 #include "../external/external.h"
 #include "../error/error.h"
 
-// #define MAX_NAME_LENGTH 128
 #define MAX_ARGS 128
-// #define MAX_ARG_LENGTH 256
 #define MAX_COMMANDS 128
-// #define MAX_FILE_LENGTH 128
 #define MAX_REDIRECTS 5
 
 
@@ -38,8 +35,6 @@ typedef struct {
     BuiltinType builtin_type;
     RedirectInfo *redirects[MAX_REDIRECTS];
 } Command;
-
-// extern Command *command_list[];
 
 Command *create_command(void);
 void free_command(Command *);
