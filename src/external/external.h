@@ -12,16 +12,17 @@ extern "C" {
 #include <sys/wait.h>
 #include <stdbool.h>
 
-#include "../command/command.h"
-#include "../builtin/builtin.h"
-#include "../external/external.h"
+// #include "../command/command.h"
+// #include "../builtin/builtin.h"
 #include "../redirect/redirect.h"
 #include "../path/path.h"
 #include "../error/error.h"
 
+struct Command;
+
 bool is_valid_external_command(const char *command_name);
 
-int execute_external_command(Command *command);
+int execute_external_command(struct Command *command);
 
 #ifdef __cplusplus
 }

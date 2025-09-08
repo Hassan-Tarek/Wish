@@ -11,14 +11,12 @@ extern "C" {
 #include <string.h>
 #include <stdbool.h>
 
-#include "../builtin/builtin.h"
+#include "../util/builtin_type.h"
 #include "../external/external.h"
 #include "../error/error.h"
 
 #define MAX_ARGS 128
-#define MAX_COMMANDS 128
 #define MAX_REDIRECTS 5
-
 
 typedef enum {
     UNDEFINED,
@@ -26,7 +24,7 @@ typedef enum {
     EXTERNAL
 } CommandType;
 
-typedef struct {
+typedef struct Command {
     char *name;
     char *args[MAX_ARGS];
     size_t args_count;

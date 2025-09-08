@@ -10,10 +10,11 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "../error/error.h"
 
-size_t INITIAL_CAPACITY = 256;
+#define INITIAL_CAPACITY 256
 
 void print_prompt(void);
 void print_message(FILE *out, const char *format, ...);

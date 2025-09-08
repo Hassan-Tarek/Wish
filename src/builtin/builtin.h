@@ -12,22 +12,14 @@ extern "C" {
 #include <stdbool.h>
 #include <unistd.h>
 
-#include "../command/command.h"
+#include "../util/builtin_type.h"
 #include "../error/error.h"
+#include "../io/io.h"
 
-typedef enum {
-    NONE,
-    CD,
-    EXIT,
-    PWD,
-    ECHO,
-    EXPORT,
-    UNSET,
-    ENV,
-    HELP
-} BuiltinType;
+struct Command;
 
-typedef void (*BuiltinFunc)(Command *);
+
+typedef void (*BuiltinFunc)(struct Command *);
 
 typedef struct {
     const BuiltinType builtin_type;
@@ -38,7 +30,7 @@ typedef struct {
 bool is_valid_builtin_command(const char *command_name);
 BuiltinType get_builtin_type(const char *command_name);
 
-void execute_builtin_command(Command *command);
+void execute_builtin_command(struct Command *command);
 
 #ifdef __cplusplus
 }

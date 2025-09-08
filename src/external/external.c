@@ -1,4 +1,6 @@
 #include "external.h"
+#include "../command/command.h"   // full definition needed here
+
 
 bool is_valid_external_command(const char *command_name) {
     if (!command_name || !*command_name)

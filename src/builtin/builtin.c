@@ -1,4 +1,6 @@
 #include "builtin.h"
+#include "../command/command.h"
+
 
 static const char *builtin_names[] = {
     "cd", 
@@ -10,18 +12,6 @@ static const char *builtin_names[] = {
     "env", 
     "help", 
     NULL
-};
-
-static const Builtin builtins[] = {
-    {CD, execute_cd_command},
-    {EXIT, execute_exit_command},
-    {PWD, execute_pwd_command},
-    {ECHO, execute_echo_command},
-    {EXPORT, execute_export_command},
-    {UNSET, execute_unset_command},
-    {ENV, execute_env_command},
-    {HELP, execute_help_command},
-    {NONE, NULL}
 };
 
 static void execute_cd_command(Command *command) {
@@ -58,7 +48,7 @@ static void execute_pwd_command(Command *command) {
 static void execute_echo_command(Command *command) {
     if (!command) return;
 
-    for (int i = 1; i < command->args_count; i++) {
+    for (size_t i = 1; i < command->args_count; i++) {
         if (command->args[i][0] == '$') {
             char *env_ret = wish_getenv(command->args[i] + 1);
             if (env_ret)
@@ -138,6 +128,18 @@ static void execute_help_command(Command *command) {
     print_message(stdout, "env              print environment variables\n");
     print_message(stdout, "help             print the help message\n");
 }
+
+static const Builtin builtins[] = {
+    {CD, execute_cd_command},
+    {EXIT, execute_exit_command},
+    {PWD, execute_pwd_command},
+    {ECHO, execute_echo_command},
+    {EXPORT, execute_export_command},
+    {UNSET, execute_unset_command},
+    {ENV, execute_env_command},
+    {HELP, execute_help_command},
+    {NONE, NULL}
+};
 
 bool is_valid_builtin_command(const char *command_name) {
     if (!command_name) 

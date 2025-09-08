@@ -12,11 +12,8 @@ static void trim(char *command) {
     while (end > start && isspace(command[end]))
         end--;
 
-    int new_len = end - start + 1;
-    for (int i = 0; i < new_len; i++) {
-        command[i] = command[start + i];
-    }
-    command[new_len] = '\0';
+    memmove(command, command + start, end - start + 1);
+    command[end + start + 1] = '\0';
 }
 
 static bool is_redirect(const char *token) {
@@ -41,8 +38,8 @@ static void parse_command_args(Command *command, const char *input) {
         return;
 
     int index = 0;
-    command->args[index] = strdup(command->name);
-    index++;
+    // command->args[index] = strdup(command->name);
+    // index++;
 
     char *copy = strdup(input);
     char *token = strtok(copy, " \t");
@@ -69,7 +66,7 @@ static void parse_redirects(Command *command, const char *input) {
     char *save_ptr = NULL;
     char *token = strtok_r(copy, " \t", &save_ptr);
     while (token) {
-        if (is_redirect_token(token)) {
+        if (is_redirect(token)) {
             char *target = strtok_r(NULL, " \t", &save_ptr);
             if (strcmp(token, "<") == 0) {
                 if (target) {
@@ -142,16 +139,16 @@ static Command *parse_command(char *token) {
     return command;
 }
 
-int parse_input(char *input, const Command *command_list[]) {
+int parse_input(char *input, const Command **command_list, const size_t max_commands) {
     if (!input || !command_list)
         return 0;
     
     trim(input);
 
-    int index = 0;
+    size_t index = 0;
     char *save_ptr;
     char *token = strtok_r(input, "&", &save_ptr);
-    while (token != NULL && index < MAX_COMMANDS) {
+    while (token != NULL && index < max_commands) {
         Command *command = parse_command(token);
         if (command) {
             command->background = true;

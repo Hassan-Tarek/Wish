@@ -1,4 +1,5 @@
 #include "command.h"
+#include "../builtin/builtin.h"
 
 Command *create_command(void) {
     Command *command = malloc(sizeof(Command));
