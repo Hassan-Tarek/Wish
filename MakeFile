@@ -1,0 +1,28 @@
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c11 -g
+
+# Source and object files
+SRCS := $(shell find src -name '*.c')
+OBJS := $(patsubst src/%.c,obj/%.o,$(SRCS))
+
+# Target executable
+TARGET = wish
+
+# Default target
+all: $(TARGET)
+
+# Link all object files to create the executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
+
+# Compile source files into object files
+obj/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean up objects and executable
+clean:
+	rm -rf obj $(TARGET)
+
+.PHONY: all clean
